@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        .central-container{
+            /* align-items: center;
+            display: flex;
+            justify-content: space-around; */
+            height: 5em;
+            display: flex;
+            align-items: center;
+            justify-content: center ;
+            clear: both;
+            padding-top: 5em; 
+            vertical-align: middle;          
+
+
+        }
+        #dial{
+            white-space: nowrap;
+            font-size: 4em;
+            display: inline;
+        }
+        body{
+            min-height: 100px;
+            height: 50em;
+            overflow:hidden;
+        }
+        #div-input{
+            margin: auto 0;
+            align-items: center;
+            display: flex;
+            justify-content:center;
+
+        }
+        input{
+            margin: 0 1em;
+            width: 4.5em;
+            background-color:rgb(255, 255, 255);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="central-container">
+        <div id="dial"><span id="minutes">00</span>-<span id="seconds">00</span>-<span>00</span></div>
+    </div>
+    <div id="div-input"><input type="button" id="starter" value="start">
+        <input type="button" id="stopper" value="stop">
+        <input type="button" id="canceller" value="cancel"></div>
+        <script>
+            var counter = 0;
+            var seconds=0;
+            var minutes=0;
+            var intervalId;
+            var trigger = 0;
+            function getElem(id){
+                return document.getElementById(id)
+            }
+            getElem("starter").onclick = function(){
+                if (trigger == 0){
+                intervalId = setInterval(timerHandler,10)
+                trigger = 1}         
+            }
+            function timerHandler(){
+                counter++;
+                if (counter == 100)
+                {
+                    counter = 0;
+                    seconds++;
+                    if(seconds == 60)
+                    {
+                        seconds =0;
+                        minutes++;
+                        if (minutes <10)
+                        {getElem("minutes").innerHTML = "0" + minutes;}
+                        else {getElem("minutes").innerHTML = minutes;}
+                    }
+                    if (seconds < 10)
+                    {getElem("seconds").innerHTML = "0" + seconds;}
+                    else{getElem("seconds").innerHTML = seconds;}
+                }
+                if (counter < 10)
+                {getElem("dial").lastChild.innerHTML = "0"+counter;}
+                else{getElem("dial").lastChild.innerHTML = counter;}
+            }
+            getElem("canceller").onclick = function(){
+            trigger = 0;
+            clearInterval(intervalId);
+            counter = 0;
+            getElem("dial").lastChild.innerHTML = '00';
+            seconds=0;
+            getElem("seconds").innerHTML = '00';
+            minutes=0;
+            getElem("minutes").innerHTML = '00';
+        }
+            getElem("stopper").onclick = function(){
+            trigger = 0;
+            clearInterval(intervalId);}
+            
+
+        </script>
+</body>
+</html>

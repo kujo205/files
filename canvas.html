@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+
+        var canvas = document.getElementById('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        var ctx = canvas.getContext('2d');
+        ctx.lineWidth = 1;
+        var circles =[];
+        
+
+        canvas.addEventListener('click',function(event){eventHandler(event)},false)
+        function eventHandler(e){
+            circles[circles.length] = createCircle(e.clientX,e.clientY)
+
+        }
+        setInterval(intervalhandler,35)
+        function intervalhandler(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for(var i =0;i<circles.length;i++){
+                arr = moveCircle(circles[i][0],circles[i][1],circles[i][2],circles[i][3],circles[i][4],circles[i][5])                
+                circles[i][0] =arr[0]
+                circles[i][1] =arr[1]
+                circles[i][2] =arr[2]
+                circles[i][4] =arr[4]
+                circles[i][5] =arr[5]
+            }
+           
+        }
+        function moveCircle(x,y,color,radius,checkerX,checkerY){
+            ctx.beginPath();
+
+            if(x-radius <= 0 || checkerX === false)
+            {x = x+3;checkerX = false}
+            if(x+radius>=window.innerWidth)
+            {x = x-3;checkerX = true}
+            if(checkerX === true)
+            {x = x-3}
+
+            
+            if(y+radius >= window.innerHeight || checkerY === false)
+            {y = y-3;checkerY = false}
+            if(y-radius<=0)
+            {y = y+3;checkerY = true}
+            if(checkerY === true)
+            {y = y+3}
+            ctx.arc(x,y,radius,0*Math.PI,2*Math.PI)
+            ctx.fillStyle = color;
+            ctx.fill()
+            return [x,y,color,radius,checkerX,checkerY]
+        }
+
+        
+        function createCircle(x,y,color,radius){
+        if(radius === undefined){radius = Math.round(Math.random()*50)}
+        ctx.beginPath();
+        ctx.arc(x,y,radius,0*Math.PI,2*Math.PI)
+        if (color === undefined){color ='rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')'}
+        ctx.fillStyle = color;
+        ctx.fill()
+        let checkerX = true;
+        let checkerY = true;
+        return [x,y,color,radius,checkerX,checkerY]
+        }
+        
+        // new circle(420,550,50)
+        
+    </script>
+</body>
+</html>
